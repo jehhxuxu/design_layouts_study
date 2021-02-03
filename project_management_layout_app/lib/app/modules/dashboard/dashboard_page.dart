@@ -16,7 +16,8 @@ class DashboardPage extends StatefulWidget {
   _DashboardPageState createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends ModularState<DashboardPage, DashboardController> {
+class _DashboardPageState
+    extends ModularState<DashboardPage, DashboardController> {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -73,7 +74,8 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
               ),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                   child: Column(
                     children: [
                       Row(
@@ -83,7 +85,7 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
                             style: textStyleScroll,
                           ),
                           SizedBox(
-                            width: 11,
+                            width: 9,
                           ),
                           SizedBox(
                             width: 20,
@@ -99,7 +101,7 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
                             style: textStyleScroll,
                           ),
                           SizedBox(
-                            width: 110,
+                            width: 95,
                           ),
                           Row(
                             children: [
@@ -121,18 +123,19 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
                       ListView(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        children: data.keys
-                            .map((e) => ListView.builder(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder: (_, index) => CardList(
-                                    showDate: index == 0,
-                                    date: e,
-                                  ),
-                                  itemCount: data[e].length,
-                                ))
-                            .toList(),
+                        children: data.keys.map((e) {
+                          return ListView.builder(
+                            padding: EdgeInsets.only(bottom: 20),
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (_, index) => CardList(
+                              showDate: index == 0,
+                              date: e,
+                              task: data[e][index],
+                            ),
+                            itemCount: data[e].length,
+                          );
+                        }).toList(),
                       )
                     ],
                   ),
@@ -149,13 +152,16 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
     final overlap = 50.0;
     final items = [
       Container(
-        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [
-          BoxShadow(
-            color: Colors.grey[400],
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-          ),
-        ]),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[400],
+                blurRadius: 5.0,
+                spreadRadius: 2.0,
+              ),
+            ]),
         child: CircleAvatar(
           backgroundColor: Colors.white,
           radius: 30,
@@ -167,13 +173,16 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
         ),
       ),
       Container(
-        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [
-          BoxShadow(
-            color: Colors.grey[400],
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-          ),
-        ]),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[400],
+                blurRadius: 5.0,
+                spreadRadius: 2.0,
+              ),
+            ]),
         child: CircleAvatar(
           backgroundColor: Colors.white,
           radius: 30,
@@ -185,13 +194,16 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
         ),
       ),
       Container(
-        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [
-          BoxShadow(
-            color: Colors.grey[400],
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-          ),
-        ]),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[400],
+                blurRadius: 5.0,
+                spreadRadius: 2.0,
+              ),
+            ]),
         child: CircleAvatar(
           backgroundColor: Colors.white,
           radius: 30,
@@ -256,7 +268,9 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
             padding: const EdgeInsets.only(top: 8.0, right: 30, bottom: 8),
             child: Container(
               width: 120,
-              decoration: BoxDecoration(color: ColorApp.burnt_sienna, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  color: ColorApp.burnt_sienna,
+                  borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: Text(
                   'In Progress',
@@ -297,11 +311,13 @@ class _DashboardPageState extends ModularState<DashboardPage, DashboardControlle
 class CardList extends StatelessWidget {
   final bool showDate;
   final String date;
+  final TaskModel task;
 
   const CardList({
     Key key,
     this.showDate,
     this.date,
+    this.task,
   }) : super(key: key);
 
   @override
@@ -309,15 +325,24 @@ class CardList extends StatelessWidget {
     return Row(children: [
       Container(
         padding: EdgeInsets.zero,
-        child: showDate ? Text(date) : Container(),
-        width: 46,
+        child: showDate
+            ? Text(
+                date,
+                style: TextStyle(
+                  color: ColorApp.martinique,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            : Container(),
+        width: 50,
       ),
       Container(
         width: 16,
         height: 120,
         child: CustomPaint(
           foregroundPainter: Timeline(
-            timelineType: showDate ? TimelineType.inProgress : TimelineType.review,
+            timelineType:
+                showDate ? TimelineType.inProgress : TimelineType.review,
           ),
         ),
       ),
@@ -332,6 +357,83 @@ class CardList extends StatelessWidget {
           ),
           child: Container(
             height: 120,
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        task.status,
+                        style: TextStyle(
+                            color: showDate
+                                ? ColorApp.burnt_sienna
+                                : ColorApp.indigo,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        task.label,
+                        style: TextStyle(color: ColorApp.cadet_blue),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        task.title,
+                        style: TextStyle(
+                            color: ColorApp.martinique,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.chat_rounded,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        task.comments.toString(),
+                        style: TextStyle(
+                            color: ColorApp.martinique,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Icon(
+                        Icons.attach_file_sharp,
+                        color: Colors.grey[300],
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        task.attachments.toString(),
+                        style: TextStyle(
+                            color: ColorApp.martinique,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -364,7 +466,8 @@ class RadialPainter extends CustomPainter {
     double radius = min(size.width / 2, size.height / 2);
 
     canvas.drawCircle(center, radius, bgLine);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -1.7, 4.7, false, completedLine);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -1.7, 4.7,
+        false, completedLine);
   }
 
   @override
@@ -425,7 +528,8 @@ class Timeline extends CustomPainter {
       ..strokeWidth = 2;
 
     while (startY < size.height + 15) {
-      canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), bgLineProgress);
+      canvas.drawLine(
+          Offset(0, startY), Offset(0, startY + dashHeight), bgLineProgress);
       startY += dashHeight + dashSpace;
     }
 
@@ -473,7 +577,8 @@ class Headerline extends CustomPainter {
       ..strokeWidth = 2;
 
     while (startY < size.height + 10) {
-      canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), bgLineProgress);
+      canvas.drawLine(
+          Offset(0, startY), Offset(0, startY + dashHeight), bgLineProgress);
       startY += dashHeight + dashSpace;
     }
   }
@@ -487,46 +592,46 @@ enum TimelineType { inProgress, done, review }
 var data = {
   '19.10': [
     TaskModel(
-      status: 'progress',
-      title: 'contact page',
+      status: 'Progress',
+      title: 'Contact page',
       id: 10,
-      label: 'Design',
+      label: '#Design',
       comments: 3,
       attachments: 2,
     ),
     TaskModel(
-      status: 'progress',
-      title: 'contact page',
+      status: 'Done',
+      title: 'Calculator page',
       id: 10,
-      label: 'Design',
+      label: '#Design',
       comments: 3,
       attachments: 2,
     )
   ],
   '24.12': [
     TaskModel(
-      status: 'progress',
-      title: 'contact page',
+      status: 'Review',
+      title: 'Technical task',
       id: 10,
-      label: 'Design',
+      label: '#Frontend',
       comments: 3,
       attachments: 2,
     ),
     TaskModel(
-      status: 'progress',
+      status: 'Done',
       title: 'contact page',
       id: 10,
-      label: 'Design',
+      label: '#Backend',
       comments: 3,
       attachments: 2,
     )
   ],
   '01.01': [
     TaskModel(
-      status: 'progress',
-      title: 'contact page',
+      status: 'Progress',
+      title: 'Contact page',
       id: 10,
-      label: 'Design',
+      label: '#Design',
       comments: 3,
       attachments: 2,
     ),
